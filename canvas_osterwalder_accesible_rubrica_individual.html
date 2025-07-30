@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Canvas Osterwalder Accesible</title>
+  <style>
+    body { font-family: sans-serif; background: #f4f4f4; padding: 20px; }
+    .canvas {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .bloque { background: #fff; border: 1px solid #ccc; padding: 10px; border-radius: 5px; }
+    textarea { width: 100%; height: 100px; resize: vertical; margin-top: 5px; }
+    .retroalimentacion { font-size: 0.9em; background: #e3f2fd; margin-top: 8px; padding: 8px; border-radius: 5px; }
+    button { margin: 20px 10px 10px; padding: 10px 20px; background-color: #005961; color: white; border: none; border-radius: 6px; cursor: pointer; }
+    button:hover { background-color: #003f42; }
+    table td { vertical-align: top; }
+  </style>
+</head>
+<body>
+  <h1 style="text-align:center;">Canvas de Modelo de Negocio - Disposición Osterwalder</h1>
+  <div class="canvas">
+    <div class="bloque" style="grid-column:auto;">
+      <label for="campo-socios"><strong>Socios Clave</strong><br><span id="desc-socios">¿Con quién colaboras?</span></label>
+      <textarea id="campo-socios" name="socios" aria-describedby="desc-socios" oninput="limpiarRetro('socios')"></textarea>
+      <div class="retroalimentacion" id="retro-socios" aria-live="polite" role="status" style="display:none;"></div>
+    </div>
+    
+    <div class="bloque" style="grid-column:auto;">
+      <label for="campo-actividades"><strong>Actividades Clave</strong><br><span id="desc-actividades">¿Qué debes hacer?</span></label>
+      <textarea id="campo-actividades" name="actividades" aria-describedby="desc-actividades" oninput="limpiarRetro('actividades')"></textarea>
+      <div class="retroalimentacion" id="retro-actividades" aria-live="polite" role="status" style="display:none;"></div>
+    </div>
+    
+    <div class="bloque" style="grid-column:auto;">
+      <label for="campo-recursos"><strong>Recursos Clave</strong><br><span id="desc-recursos">¿Qué recursos necesitas?</span></label>
+      <textarea id="campo-recursos" name="recursos" aria-describedby="desc-recursos" oninput="limpiarRetro('recursos')"></textarea>
+      <div class="retroalimentacion" id="retro-recursos" aria-live="polite" role="status" style="display:none;"></div>
+    </div>
+    
+    <div class="bloque" style="grid-column:auto;">
+      <label for="campo-valor"><strong>Propuesta de Valor</strong><br><span id="desc-valor">¿Qué valor entregas?</span></label>
+      <textarea id="campo-valor" name="valor" aria-describedby="desc-valor" oninput="limpiarRetro('valor')"></textarea>
+      <div class="retroalimentacion" id="retro-valor" aria-live="polite" role="status" style="display:none;"></div>
+    </div>
+    
+    <div class="bloque" style="grid-column:auto;">
+      <label for="campo-relacion"><strong>Relación con Clientes</strong><br><span id="desc-relacion">¿Cómo interactúas?</span></label>
+      <textarea id="campo-relacion" name="relacion" aria-describedby="desc-relacion" oninput="limpiarRetro('relacion')"></textarea>
+      <div class="retroalimentacion" id="retro-relacion" aria-live="polite" role="status" style="display:none;"></div>
+    </div>
+    
+    <div class="bloque" style="grid-column:auto;">
+      <label for="campo-canales"><strong>Canales</strong><br><span id="desc-canales">¿Cómo llegas?</span></label>
+      <textarea id="campo-canales" name="canales" aria-describedby="desc-canales" oninput="limpiarRetro('canales')"></textarea>
+      <div class="retroalimentacion" id="retro-canales" aria-live="polite" role="status" style="display:none;"></div>
+    </div>
+    
+    <div class="bloque" style="grid-column:auto;">
+      <label for="campo-segmentos"><strong>Segmentos de Clientes</strong><br><span id="desc-segmentos">¿A quién sirves?</span></label>
+      <textarea id="campo-segmentos" name="segmentos" aria-describedby="desc-segmentos" oninput="limpiarRetro('segmentos')"></textarea>
+      <div class="retroalimentacion" id="retro-segmentos" aria-live="polite" role="status" style="display:none;"></div>
+    </div>
+    
+    <div class="bloque" style="grid-column:auto;">
+      <label for="campo-costos"><strong>Estructura de Costos</strong><br><span id="desc-costos">¿Cuáles son tus costos?</span></label>
+      <textarea id="campo-costos" name="costos" aria-describedby="desc-costos" oninput="limpiarRetro('costos')"></textarea>
+      <div class="retroalimentacion" id="retro-costos" aria-live="polite" role="status" style="display:none;"></div>
+    </div>
+    
+    <div class="bloque" style="grid-column:auto;">
+      <label for="campo-ingresos"><strong>Fuentes de Ingreso</strong><br><span id="desc-ingresos">¿Cómo generas ingresos?</span></label>
+      <textarea id="campo-ingresos" name="ingresos" aria-describedby="desc-ingresos" oninput="limpiarRetro('ingresos')"></textarea>
+      <div class="retroalimentacion" id="retro-ingresos" aria-live="polite" role="status" style="display:none;"></div>
+    </div>
+    </div>
+  <div style="text-align:center;">
+    <button type="button" onclick="enviarCanvas()">Enviar para Retroalimentación</button>
+    <button type="button" onclick="mostrarRubrica()">📊 Evaluar con Rúbrica</button>
+  </div>
+  
+<div class="rubrica" id="rubricaFinal" style="display:none; margin-top: 20px;">
+  <h2>Evaluación por Rúbrica (por bloque)</h2>
+  <table border="1" cellspacing="0" cellpadding="6" style="width:100%; background:white; border-collapse:collapse;">
+    <thead>
+      <tr style="background:#dbeafe;">
+        <th>Bloque</th>
+        <th>Calificación (1-5)</th>
+        <th>Observaciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+    <tr>
+      <td>Socios Clave</td>
+      <td id="calif-socios">-</td>
+      <td id="obs-socios">-</td>
+    </tr>
+    
+    <tr>
+      <td>Actividades Clave</td>
+      <td id="calif-actividades">-</td>
+      <td id="obs-actividades">-</td>
+    </tr>
+    
+    <tr>
+      <td>Recursos Clave</td>
+      <td id="calif-recursos">-</td>
+      <td id="obs-recursos">-</td>
+    </tr>
+    
+    <tr>
+      <td>Propuesta de Valor</td>
+      <td id="calif-valor">-</td>
+      <td id="obs-valor">-</td>
+    </tr>
+    
+    <tr>
+      <td>Relación con Clientes</td>
+      <td id="calif-relacion">-</td>
+      <td id="obs-relacion">-</td>
+    </tr>
+    
+    <tr>
+      <td>Canales</td>
+      <td id="calif-canales">-</td>
+      <td id="obs-canales">-</td>
+    </tr>
+    
+    <tr>
+      <td>Segmentos de Clientes</td>
+      <td id="calif-segmentos">-</td>
+      <td id="obs-segmentos">-</td>
+    </tr>
+    
+    <tr>
+      <td>Estructura de Costos</td>
+      <td id="calif-costos">-</td>
+      <td id="obs-costos">-</td>
+    </tr>
+    
+    <tr>
+      <td>Fuentes de Ingreso</td>
+      <td id="calif-ingresos">-</td>
+      <td id="obs-ingresos">-</td>
+    </tr>
+    
+    </tbody>
+  </table>
+</div>
+
+  
+<script>
+  const ejemplos = {
+    "socios": "Ejemplo: Imprentas ecológicas, distribuidores.","actividades": "Ejemplo: Diseñar, producir y vender.","recursos": "Ejemplo: Diseñador gráfico, papel reciclado, computador.","valor": "Ejemplo: Cuadernos ecológicos hechos con papel reciclado.","relacion": "Ejemplo: Chat en línea y boletines electrónicos mensuales.","canales": "Ejemplo: Tienda online y redes sociales.","segmentos": "Ejemplo: Jóvenes universitarios que buscan productos sostenibles.","costos": "Ejemplo: Materiales, sueldos y publicidad.","ingresos": "Ejemplo: Venta directa y suscripciones."
+  };
+
+  function retroalimentar(texto, campo) {
+    if (!texto || texto.trim() === "") return "⚠️ Campo vacío.\n\n" + ejemplos[campo];
+    if (texto.trim().length < 50) return "✏️ Respuesta muy breve. Agrega detalles.\n\n" + ejemplos[campo];
+    if (texto.toLowerCase().includes("no sé")) return "❌ Respuesta no válida.\n\n" + ejemplos[campo];
+    return "✅ ¡Buen inicio! Puedes profundizar más.\n\n" + ejemplos[campo];
+  }
+
+  function enviarCanvas() {
+    Object.keys(ejemplos).forEach(campo => {
+      const texto = document.getElementById("campo-" + campo).value.trim();
+      const div = document.getElementById("retro-" + campo);
+      div.innerText = retroalimentar(texto, campo);
+      div.style.display = "block";
+    });
+  }
+
+  function mostrarRubrica() {
+    Object.keys(ejemplos).forEach(campo => {
+      const texto = document.getElementById("campo-" + campo).value.trim();
+      let nota = 1;
+      if (texto.length > 50) nota = 3;
+      if (texto.length > 100) nota = 4;
+      if (texto.length > 150 && !texto.toLowerCase().includes("no sé")) nota = 5;
+
+      document.getElementById("calif-" + campo).innerText = nota;
+      let obs = "";
+      if (nota <= 2) obs = "Debe mejorar la claridad y el desarrollo.";
+      else if (nota === 3) obs = "Puedes trabajar en más detalle y ejemplos.";
+      else if (nota === 4) obs = "Buen trabajo, aún puedes mejorar precisión.";
+      else obs = "Excelente desarrollo del bloque.";
+      document.getElementById("obs-" + campo).innerText = obs;
+    });
+    document.getElementById("rubricaFinal").style.display = "block";
+  }
+
+  function limpiarRetro(campo) {
+    const div = document.getElementById("retro-" + campo);
+    div.innerText = "";
+    div.style.display = "none";
+  }
+</script>
+</body>
+
