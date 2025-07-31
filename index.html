@@ -199,6 +199,29 @@
     div.innerText = "";
     div.style.display = "none";
   }
+  function enviarRespuestas() {
+  const datos = {
+    nombre: document.getElementById("nombre").value,
+    email: document.getElementById("email").value,
+    respuestas: document.getElementById("respuestas").value
+  };
+
+  fetch("https://script.google.com/macros/s/AKfycbwpBxdP9IaQaQXXeE4KZHLCEavsRFqJ4cXchKbgYZRTSRXg606Tc-cIzZJB_B4QYw/exec", {
+    method: "POST",
+    body: JSON.stringify(datos),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+  .then(res => res.text())
+  .then(data => {
+    alert("¡Respuestas enviadas con éxito!");
+  })
+  .catch(err => {
+    alert("Error al enviar respuestas");
+    console.error(err);
+  });
+}
 </script>
 </body>
 
